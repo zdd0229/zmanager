@@ -1,6 +1,6 @@
 package com.z;
 
-import com.z.mapper.AccountMapper;
+import com.z.repository.AccountMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

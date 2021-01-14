@@ -1,6 +1,6 @@
 package com.z.service;
 
-import com.z.mapper.AccountMapper;
+import com.z.repository.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
