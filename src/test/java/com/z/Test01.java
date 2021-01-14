@@ -1,6 +1,6 @@
 package com.z;
 
-import com.z.mapper.TestMapper;
+import com.z.mapper.AccountMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,13 @@ import java.util.Map;
 public class Test01 {
 
     @Autowired
-    TestMapper testMapper;
+    AccountMapper accountMapper;
 
     @Test
     public void testDao(){
-        List<Map<String, Object>> all1 = testMapper.getAllByAnnotations();
+        List<Map<String, Object>> all1 = accountMapper.getAllByAnnotations();
         System.out.println(all1);
-        List<Map<String, Object>> all2 = testMapper.getAllByXml();
+        List<Map<String, Object>> all2 = accountMapper.getAllByXml();
         System.out.println(all2);
     }
 

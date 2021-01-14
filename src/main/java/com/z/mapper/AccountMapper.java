@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface TestMapper {
+public interface AccountMapper {
 
     @Select("select * from account")
     List<Map<String,Object>> getAllByAnnotations();
