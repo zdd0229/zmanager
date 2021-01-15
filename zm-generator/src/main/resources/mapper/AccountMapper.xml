@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.z.repository.AccountMapper">
-  <resultMap id="BaseResultMap" type="com.z.domain.Account">
+<mapper namespace="com.z.generator.dao.AccountMapper">
+  <resultMap id="BaseResultMap" type="com.z.generator.entity.Account">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="balance" jdbcType="DECIMAL" property="balance" />
@@ -15,46 +15,24 @@
     id, name, balance, open_time, create_by, create_time, update_by, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from account
     where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectByKey" resultType="com.z.domain.Account">
-    select
-    <include refid="Base_Column_List" />
-    from account
-    <where>
-        <if test="name != null">
-          and name like CONCAT('%',#{name,jdbcType=VARCHAR},'%')
-        </if>
-        <if test="balanceStart != null">
-          and balance &gt;= #{balanceStart,jdbcType=DECIMAL}
-        </if>
-        <if test="balanceEnd != null">
-          and balance &lt;= #{balanceEnd,jdbcType=DECIMAL}
-        </if>
-        <if test="openTimeStart != null">
-          and open_time &gt;= #{openTimeStart,jdbcType=TIMESTAMP}
-        </if>
-        <if test="openTimeEnd != null">
-          and open_time &lt;= #{openTimeEnd,jdbcType=TIMESTAMP}
-        </if>
-    </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from account
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.z.domain.Account">
-    insert into account (id, name, balance,
-                         open_time, create_by, create_time,
-                         update_by, update_time)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{balance,jdbcType=DECIMAL},
-            #{openTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-            #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.z.generator.entity.Account">
+    insert into account (id, name, balance, 
+      open_time, create_by, create_time, 
+      update_by, update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{balance,jdbcType=DECIMAL}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.z.domain.Account">
+  <insert id="insertSelective" parameterType="com.z.generator.entity.Account">
     insert into account
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -109,7 +87,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.z.domain.Account">
+  <update id="updateByPrimaryKeySelective" parameterType="com.z.generator.entity.Account">
     update account
     <set>
       <if test="name != null">
@@ -136,15 +114,15 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.z.domain.Account">
+  <update id="updateByPrimaryKey" parameterType="com.z.generator.entity.Account">
     update account
     set name = #{name,jdbcType=VARCHAR},
-        balance = #{balance,jdbcType=DECIMAL},
-        open_time = #{openTime,jdbcType=TIMESTAMP},
-        create_by = #{createBy,jdbcType=VARCHAR},
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-        update_by = #{updateBy,jdbcType=VARCHAR},
-        update_time = #{updateTime,jdbcType=TIMESTAMP}
+      balance = #{balance,jdbcType=DECIMAL},
+      open_time = #{openTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

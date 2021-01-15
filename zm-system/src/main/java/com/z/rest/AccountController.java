@@ -3,6 +3,7 @@ package com.z.rest;
 import com.z.domain.Account;
 import com.z.domain.vo.AccountVo;
 import com.z.service.AccountService;
+import com.z.service.dto.AccountQuery;
 import com.z.utils.BeanCopierUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +20,9 @@ public class AccountController {
     AccountService accountService;
 
     @GetMapping
-    public List<AccountVo> getAll(){
-        List<Account> all = accountService.getAll();
-        return BeanCopierUtils.copyList(Account.class, AccountVo.class,all);
+    public List<AccountVo> getSome(AccountQuery query){
+        List<Account> some = accountService.getSome(query);
+        return BeanCopierUtils.copyList(Account.class, AccountVo.class,some);
     }
 
 }

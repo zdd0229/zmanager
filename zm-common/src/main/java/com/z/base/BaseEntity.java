@@ -10,7 +10,7 @@ public class BaseEntity implements Serializable {
 
     private String createBy;
 
-    private String updatedBy;
+    private String updateBy;
 
     private Timestamp createTime;
 

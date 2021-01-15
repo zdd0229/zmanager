@@ -1,9 +1,10 @@
 package com.z.service;
 
 import com.z.domain.Account;
+import com.z.service.dto.AccountQuery;
 
 import java.util.List;
 
 public interface AccountService {
-    List<Account> getAll();
+    public List<Account> getSome(AccountQuery query);
 }

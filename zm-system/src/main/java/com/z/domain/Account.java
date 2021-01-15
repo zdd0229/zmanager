@@ -10,9 +10,12 @@ import java.util.Date;
 @Data
 public class Account extends BaseEntity implements Serializable {
 
-    private Long accountId;
+    private Integer id;
+
     private String name;
+
     private BigDecimal balance;
+
     private Date openTime;
 
 }

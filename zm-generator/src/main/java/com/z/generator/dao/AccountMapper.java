@@ -1,13 +1,7 @@
-package com.z.repository;
+package com.z.generator.dao;
 
+import com.z.generator.entity.Account;
 
-import com.z.domain.Account;
-import com.z.service.dto.AccountQuery;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
-@Repository
 public interface AccountMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,8 +10,6 @@ public interface AccountMapper {
     int insertSelective(Account record);
 
     Account selectByPrimaryKey(Integer id);
-
-    List<Account> selectByKey(AccountQuery query);
 
     int updateByPrimaryKeySelective(Account record);
 
