@@ -1,5 +1,6 @@
 package com.z;
 
+import com.z.domain.Account;
 import com.z.repository.AccountMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,9 +20,9 @@ public class Test01 {
 
     @Test
     public void testDao(){
-        List<Map<String, Object>> all1 = accountMapper.getAllByAnnotations();
+        List<Account> all1 = accountMapper.getAllByAnnotations();
         System.out.println(all1);
-        List<Map<String, Object>> all2 = accountMapper.getAllByXml();
+        List<Account> all2 = accountMapper.getAllByXml();
         System.out.println(all2);
     }
 

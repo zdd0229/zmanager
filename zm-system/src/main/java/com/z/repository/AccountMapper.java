@@ -1,4 +1,6 @@
 package com.z.repository;
+import com.z.domain.Account;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -9,8 +11,10 @@ import java.util.Map;
 public interface AccountMapper {
 
     @Select("select * from account")
-    List<Map<String,Object>> getAllByAnnotations();
+    List<Account> getAllByAnnotations();
 
-    List<Map<String,Object>> getAllByXml();
+    List<Account> getAllByXml();
+
+    public int insert(Account account);
 
 }

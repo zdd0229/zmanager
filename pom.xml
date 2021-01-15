@@ -12,6 +12,7 @@
     <modules>
         <module>zm-common</module>
         <module>zm-system</module>
+        <module>zm-generator</module>
     </modules>
 
     <parent>

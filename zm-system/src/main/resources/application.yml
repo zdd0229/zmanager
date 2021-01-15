@@ -1,5 +1,5 @@
 server:
-  port: 8060
+  port: 8086
 
 spring:
   application:
@@ -11,3 +11,5 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
