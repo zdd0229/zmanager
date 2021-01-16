@@ -3,7 +3,7 @@ package com.z.base;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 public class BaseDTO implements Serializable {
@@ -12,8 +12,8 @@ public class BaseDTO implements Serializable {
 
     private String updateBy;
 
-    private Timestamp createTime;
+    private Date createTime;
 
-    private Timestamp updateTime;
+    private Date updateTime;
 
 }

@@ -46,7 +46,7 @@
     delete from account
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.z.domain.Account">
+  <insert id="insert" parameterType="com.z.domain.Account" useGeneratedKeys="true" keyProperty="id">
     insert into account (id, name, balance,
                          open_time, create_by, create_time,
                          update_by, update_time)
