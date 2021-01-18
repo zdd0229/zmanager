@@ -29,8 +29,8 @@
                         password="root"/>
 
         <!--3.生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="com.z.generator.entity"
-                            targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.z.security.domain"
+                            targetProject="../zm-system/src/main/java">
         <!--targetProject=  指定包所在的位置，只需要到src/man/java  -->
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -39,18 +39,18 @@
 
         <!--4.生成映射文件包名和位置 -->
         <sqlMapGenerator targetPackage="mapper"
-                         targetProject="src/main/resources"><!-- 指定包的位置 -->
+                         targetProject="../zm-system/src/main/resources"><!-- 指定包的位置 -->
             <property name="enableSubPackages" value="true"/><!--如果包不存在创建一个  -->
         </sqlMapGenerator>
 
         <!--5.生成dao层的包和位置  -->
-        <javaClientGenerator targetPackage="com.z.generator.dao" type="XMLMAPPER"
-                             targetProject="src/main/java">
+        <javaClientGenerator targetPackage="com.z.security.repository" type="XMLMAPPER"
+                             targetProject="../zm-system/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
         <!--6. 我要生成的表  可以一次性生成多张表 tableName是表名   domainObjectName是实体名 -->
-        <table tableName="account" domainObjectName="Account"
+        <table tableName="sys_user" domainObjectName="SysUser"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableInsert="true"/>
