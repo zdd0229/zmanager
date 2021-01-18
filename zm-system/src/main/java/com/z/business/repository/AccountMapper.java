@@ -1,8 +1,8 @@
-package com.z.repository;
+package com.z.business.repository;
 
 
-import com.z.domain.Account;
-import com.z.service.dto.AccountQuery;
+import com.z.business.domain.entity.Account;
+import com.z.business.domain.query.AccountQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

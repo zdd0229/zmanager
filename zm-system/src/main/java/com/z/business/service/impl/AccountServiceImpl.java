@@ -1,10 +1,10 @@
-package com.z.service.impl;
+package com.z.business.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.z.domain.Account;
-import com.z.repository.AccountMapper;
-import com.z.service.AccountService;
-import com.z.service.dto.AccountQuery;
+import com.z.business.domain.entity.Account;
+import com.z.business.domain.query.AccountQuery;
+import com.z.business.repository.AccountMapper;
+import com.z.business.service.AccountService;
+import com.z.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,9 +40,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> getSome(AccountQuery query){
-        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+
+        PageUtils.setPageInfo();
         List<Account> accounts = accountMapper.selectByKey(query);
         return accounts;
+
     }
 
 }

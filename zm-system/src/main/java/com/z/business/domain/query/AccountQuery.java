@@ -1,12 +1,11 @@
-package com.z.service.dto;
+package com.z.business.domain.query;
 
-import com.z.base.BaseQuery;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class AccountQuery extends BaseQuery {
+public class AccountQuery {
     private String name;
 
     private BigDecimal balanceStart;

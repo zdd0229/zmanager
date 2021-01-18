@@ -1,4 +1,4 @@
-package com.z.domain.vo;
+package com.z.business.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

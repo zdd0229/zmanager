@@ -1,7 +1,8 @@
-package com.z.service;
+package com.z.business.service;
 
-import com.z.domain.Account;
-import com.z.service.dto.AccountQuery;
+
+import com.z.business.domain.entity.Account;
+import com.z.business.domain.query.AccountQuery;
 
 import java.math.BigDecimal;
 import java.util.List;

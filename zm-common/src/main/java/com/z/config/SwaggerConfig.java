@@ -19,7 +19,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 // 自行修改为自己的包路径
-                .apis(RequestHandlerSelectors.basePackage("com.z.rest"))
+                .apis(RequestHandlerSelectors.basePackage("com.z"))
                 .paths(PathSelectors.any())
                 .build();
     }

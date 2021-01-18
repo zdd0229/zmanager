@@ -1,16 +1,17 @@
-package com.z.rest;
+package com.z.business.rest;
 
 import com.github.pagehelper.PageInfo;
-import com.z.domain.Account;
-import com.z.domain.vo.AccountVo;
-import com.z.service.AccountService;
-import com.z.service.dto.AccountQuery;
+import com.z.business.domain.entity.Account;
+import com.z.business.domain.vo.AccountVo;
+import com.z.business.service.AccountService;
+import com.z.business.domain.query.AccountQuery;
 import com.z.utils.BeanCopierUtils;
 import com.z.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -26,7 +27,7 @@ public class AccountController {
 
     @PostMapping
     @ApiOperation("新增账户")
-    public ResponseEntity addOne(@RequestBody Account account){
+    public ResponseEntity addOne(@RequestBody @Validated Account account){
         return R.create(accountService.addAccount(account)) ;
     }
 
@@ -36,13 +37,11 @@ public class AccountController {
         return R.create(accountService.delAccount(id)) ;
     }
 
-
     @PatchMapping("/{id}/balance")
     @ApiOperation("修改余额")
     public ResponseEntity changeBalance(@PathVariable("id") Integer id, BigDecimal balance){
         return R.create(accountService.changeBalance(id,balance)) ;
     }
-
 
     @GetMapping
     @ApiOperation("条件查询")
