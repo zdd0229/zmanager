@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SysUserMapper {
-    int deleteByPrimaryKey(Long userId);
+    int deleteByPrimaryKey(String username);
 
     int insert(SysUser record);
 
@@ -18,4 +18,6 @@ public interface SysUserMapper {
     int updateByPrimaryKey(SysUser record);
 
     int checkLogin(String userName,String password);
+
+    SysUser queryByUserName(String username);
 }

@@ -1,27 +1,44 @@
 package com.z.security.repository;
 
+import com.z.security.domain.SysUser;
+import com.z.security.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class UserDetailsRepository {
-    private Map<String, UserDetails> users = new HashMap<>();
+
+    @Autowired
+    UserService userService;
 
     public void createUser(UserDetails user) {
-        users.putIfAbsent(user.getUsername(), user);
+
+        SysUser sysUser = new SysUser();
+
+        sysUser.setUsername(user.getUsername());
+        sysUser.setPassword(user.getPassword());
+
+        userService.createUser(sysUser);
     }
 
     public void updateUser(UserDetails user) {
-        users.put(user.getUsername(), user);
+        SysUser sysUser = new SysUser();
+
+        sysUser.setUsername(user.getUsername());
+        sysUser.setPassword(user.getPassword());
+
+        userService.updateUser(sysUser);
     }
 
     public void deleteUser(String username) {
-        users.remove(username);
+        userService.deleteUser(username);
     }
 
     public void changePassword(String oldPassword, String newPassword) {
@@ -37,7 +54,7 @@ public class UserDetailsRepository {
 
         String username = currentUser.getName();
 
-        UserDetails user = users.get(username);
+        UserDetails user = this.loadUserByUsername(username);
 
 
         if (user == null) {
@@ -45,14 +62,34 @@ public class UserDetailsRepository {
         }
 
         // todo copy InMemoryUserDetailsManager  自行实现具体的更新密码逻辑
+        if(!Objects.equals(user.getPassword(),oldPassword)){
+            throw new IllegalStateException("Current password doesn't  match the password provided");
+        }
+
+        SysUser sysUser = new SysUser();
+
+        sysUser.setUsername(user.getUsername());
+        sysUser.setPassword(user.getPassword());
+
+        userService.updateUser(sysUser);
+
     }
 
     public boolean userExists(String username) {
 
-        return users.containsKey(username);
+        return Objects.nonNull(userService.queryByUserName(username));
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return users.get(username);
+
+        SysUser sysUser = userService.queryByUserName(username);
+
+        if(Objects.nonNull(sysUser)){
+            return User.withUsername(sysUser.getUsername()).password(sysUser.getPassword())
+                    .authorities(AuthorityUtils.NO_AUTHORITIES)
+                    .build();
+        }
+
+        throw new UsernameNotFoundException("username: " + username + " notfound");
     }
 }
