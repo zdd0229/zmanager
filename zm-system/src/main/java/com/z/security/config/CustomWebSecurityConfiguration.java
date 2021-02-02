@@ -13,7 +13,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 
 @Configuration
@@ -48,6 +50,11 @@ public class CustomWebSecurityConfiguration {
     @Configuration
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     static class DefaultConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+        @Resource
+        private PreLoginFilter preLoginFilter;
+
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             super.configure(auth);
@@ -65,6 +72,7 @@ public class CustomWebSecurityConfiguration {
                     .and()
                     .authorizeRequests().anyRequest().authenticated()
                     .and()
+                    .addFilterBefore(preLoginFilter, UsernamePasswordAuthenticationFilter.class)
                     .formLogin()
                     .loginProcessingUrl(LOGIN_PROCESSING_URL)
                     .successForwardUrl("/login/success").
