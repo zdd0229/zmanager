@@ -3,6 +3,8 @@ package com.z.security.config;
 import com.z.security.filter.JsonLoginPostProcessor;
 import com.z.security.filter.LoginPostProcessor;
 import com.z.security.filter.PreLoginFilter;
+import com.z.security.handler.CustomLogoutHandler;
+import com.z.security.handler.CustomLogoutSuccessHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -13,7 +15,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -72,11 +73,15 @@ public class CustomWebSecurityConfiguration {
                     .and()
                     .authorizeRequests().anyRequest().authenticated()
                     .and()
-                    .addFilterBefore(preLoginFilter, UsernamePasswordAuthenticationFilter.class)
+//                    .addFilterBefore(preLoginFilter, UsernamePasswordAuthenticationFilter.class)
                     .formLogin()
                     .loginProcessingUrl(LOGIN_PROCESSING_URL)
-                    .successForwardUrl("/login/success").
-                    failureForwardUrl("/login/failure");
+                    .successForwardUrl("/login/success")
+                    .failureForwardUrl("/login/failure")
+                    .and()
+                    .logout()
+                    .addLogoutHandler(new CustomLogoutHandler())
+                    .logoutSuccessHandler(new CustomLogoutSuccessHandler());
         }
     }
 
