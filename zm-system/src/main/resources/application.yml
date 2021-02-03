@@ -28,10 +28,10 @@ mybatis:
 jwt:
   config:
     enabled: true
-    key-location: felordcn.jks
-    key-alias: felordcn
+    key-location: zhao.jks
+    key-alias: zhaocn
     key-pass: 123456
-    iss: felord.cn
+    iss: zhao.cn
     sub: all
     access-exp-days: 30
     refresh-exp-days: 90

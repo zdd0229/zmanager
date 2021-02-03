@@ -5,6 +5,7 @@ import com.z.security.filter.LoginPostProcessor;
 import com.z.security.filter.PreLoginFilter;
 import com.z.security.handler.CustomLogoutHandler;
 import com.z.security.handler.CustomLogoutSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -15,6 +16,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -54,7 +58,10 @@ public class CustomWebSecurityConfiguration {
 
         @Resource
         private PreLoginFilter preLoginFilter;
-
+        @Autowired
+        private AuthenticationSuccessHandler authenticationSuccessHandler;
+        @Autowired
+        private AuthenticationFailureHandler authenticationFailureHandler;
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -73,11 +80,13 @@ public class CustomWebSecurityConfiguration {
                     .and()
                     .authorizeRequests().anyRequest().authenticated()
                     .and()
-//                    .addFilterBefore(preLoginFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(preLoginFilter, UsernamePasswordAuthenticationFilter.class)
                     .formLogin()
                     .loginProcessingUrl(LOGIN_PROCESSING_URL)
-                    .successForwardUrl("/login/success")
-                    .failureForwardUrl("/login/failure")
+//                    .successForwardUrl("/login/success")
+//                    .failureForwardUrl("/login/failure")
+                    .successHandler(authenticationSuccessHandler)
+                    .failureHandler(authenticationFailureHandler)
                     .and()
                     .logout()
                     .addLogoutHandler(new CustomLogoutHandler())
