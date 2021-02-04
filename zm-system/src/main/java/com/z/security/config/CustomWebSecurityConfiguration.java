@@ -1,10 +1,15 @@
 package com.z.security.config;
 
 import com.z.security.filter.JsonLoginPostProcessor;
+import com.z.security.filter.JwtAuthenticationFilter;
 import com.z.security.filter.LoginPostProcessor;
 import com.z.security.filter.PreLoginFilter;
 import com.z.security.handler.CustomLogoutHandler;
 import com.z.security.handler.CustomLogoutSuccessHandler;
+import com.z.security.handler.SimpleAccessDeniedHandler;
+import com.z.security.handler.SimpleAuthenticationEntryPoint;
+import com.z.security.jwt.JwtTokenGenerator;
+import com.z.security.jwt.JwtTokenStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -16,6 +21,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -51,6 +57,18 @@ public class CustomWebSecurityConfiguration {
         return new PreLoginFilter(LOGIN_PROCESSING_URL,loginPostProcessors);
     }
 
+    /**
+     * Jwt 认证过滤器.
+     *
+     * @param jwtTokenGenerator jwt 工具类 负责 生成 验证 解析
+     * @param jwtTokenStorage   jwt 缓存存储接口
+     * @return the jwt authentication filter
+     */
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtTokenGenerator jwtTokenGenerator, JwtTokenStorage jwtTokenStorage) {
+        return new JwtAuthenticationFilter(jwtTokenGenerator, jwtTokenStorage);
+    }
+
 
     @Configuration
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
@@ -58,6 +76,8 @@ public class CustomWebSecurityConfiguration {
 
         @Resource
         private PreLoginFilter preLoginFilter;
+        @Resource
+        private JwtAuthenticationFilter jwtAuthenticationFilter;
         @Autowired
         private AuthenticationSuccessHandler authenticationSuccessHandler;
         @Autowired
@@ -78,19 +98,20 @@ public class CustomWebSecurityConfiguration {
             http.csrf().disable()
                     .cors()
                     .and()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .exceptionHandling().authenticationEntryPoint(new SimpleAuthenticationEntryPoint()).accessDeniedHandler(new SimpleAccessDeniedHandler())
+                    .and()
                     .authorizeRequests().anyRequest().authenticated()
                     .and()
                     .addFilterBefore(preLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                    .formLogin()
-                    .loginProcessingUrl(LOGIN_PROCESSING_URL)
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 //                    .successForwardUrl("/login/success")
 //                    .failureForwardUrl("/login/failure")
-                    .successHandler(authenticationSuccessHandler)
-                    .failureHandler(authenticationFailureHandler)
+                    .formLogin().loginProcessingUrl(LOGIN_PROCESSING_URL).successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
                     .and()
-                    .logout()
-                    .addLogoutHandler(new CustomLogoutHandler())
-                    .logoutSuccessHandler(new CustomLogoutSuccessHandler());
+                    .logout().addLogoutHandler(new CustomLogoutHandler()).logoutSuccessHandler(new CustomLogoutSuccessHandler());
+
         }
     }
 

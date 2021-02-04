@@ -61,9 +61,9 @@ public class PreLoginFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        ParameterRequestWrapper parameterRequestWrapper = new ParameterRequestWrapper((HttpServletRequest) request);
         if (requiresAuthenticationRequestMatcher.matches((HttpServletRequest) request)) {
 
+            ParameterRequestWrapper parameterRequestWrapper = new ParameterRequestWrapper((HttpServletRequest) request);
             LoginTypeEnum typeFromReq = getTypeFromReq(request);
 
             LoginPostProcessor loginPostProcessor = processors.get(typeFromReq);
@@ -74,9 +74,10 @@ public class PreLoginFilter extends GenericFilterBean {
             parameterRequestWrapper.setAttribute(SPRING_SECURITY_FORM_USERNAME_KEY, username);
             parameterRequestWrapper.setAttribute(SPRING_SECURITY_FORM_PASSWORD_KEY, password);
 
+            chain.doFilter(parameterRequestWrapper, response);
         }
 
-        chain.doFilter(parameterRequestWrapper, response);
+        chain.doFilter(request, response);
     }
 
     private LoginTypeEnum getTypeFromReq(ServletRequest request) {

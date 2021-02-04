@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -79,7 +80,7 @@ public class JwtConfiguration {
             map.put("access_token", jwtTokenPair.getAccessToken());
             map.put("refresh_token", jwtTokenPair.getRefreshToken());
 
-            ServletUtils.responseJsonWriter(response,map);
+            ServletUtils.responseJsonWriter(response,map, HttpStatus.OK);
         };
     }
 
@@ -99,7 +100,7 @@ public class JwtConfiguration {
 
             map.put("time", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             map.put("flag", "failure_login");
-            ServletUtils.responseJsonWriter(response,map);
+            ServletUtils.responseJsonWriter(response,map, HttpStatus.OK);
         };
     }
 

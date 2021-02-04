@@ -3,6 +3,7 @@ package com.z.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -59,8 +60,8 @@ public class ServletUtils {
 
     }
 
-    public static void responseJsonWriter(HttpServletResponse response, Object res) throws IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
+    public static void responseJsonWriter(HttpServletResponse response, Object res, HttpStatus status) throws IOException {
+        response.setStatus(status.value());
         response.setCharacterEncoding("utf-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ObjectMapper objectMapper = new ObjectMapper();

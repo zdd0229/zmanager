@@ -2,6 +2,7 @@ package com.z.security.handler;
 
 import com.z.utils.ServletUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -23,7 +24,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
         Map res = new HashMap();
         res.put("result","退出成功");
-        ServletUtils.responseJsonWriter(response, res);
+        ServletUtils.responseJsonWriter(response, res, HttpStatus.OK);
 
     }
 

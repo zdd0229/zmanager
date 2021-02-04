@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -45,7 +46,8 @@ public class AccountController {
 
     @GetMapping
     @ApiOperation("条件查询")
-    public ResponseEntity getSome(AccountQuery query){
+    public ResponseEntity getSome(HttpServletRequest request , AccountQuery query){
+
         List<Account> some = accountService.getSome(query);
         PageInfo pageInfo = new PageInfo(some);
         pageInfo.setList(BeanCopierUtils.copyList(Account.class, AccountVo.class, some));
