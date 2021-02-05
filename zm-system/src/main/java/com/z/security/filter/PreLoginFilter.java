@@ -75,6 +75,7 @@ public class PreLoginFilter extends GenericFilterBean {
             parameterRequestWrapper.setAttribute(SPRING_SECURITY_FORM_PASSWORD_KEY, password);
 
             chain.doFilter(parameterRequestWrapper, response);
+            return;
         }
 
         chain.doFilter(request, response);

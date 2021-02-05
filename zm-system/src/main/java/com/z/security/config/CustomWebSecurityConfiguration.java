@@ -26,7 +26,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.annotation.Resource;
 import java.util.Collection;
 
 @Configuration
@@ -52,7 +51,6 @@ public class CustomWebSecurityConfiguration {
      * @param loginPostProcessors the login post processors
      * @return the pre login filter
      */
-    @Bean
     public PreLoginFilter preLoginFilter(Collection<LoginPostProcessor> loginPostProcessors){
         return new PreLoginFilter(LOGIN_PROCESSING_URL,loginPostProcessors);
     }
@@ -64,7 +62,6 @@ public class CustomWebSecurityConfiguration {
      * @param jwtTokenStorage   jwt 缓存存储接口
      * @return the jwt authentication filter
      */
-    @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(JwtTokenGenerator jwtTokenGenerator, JwtTokenStorage jwtTokenStorage) {
         return new JwtAuthenticationFilter(jwtTokenGenerator, jwtTokenStorage);
     }
@@ -74,10 +71,12 @@ public class CustomWebSecurityConfiguration {
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     static class DefaultConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-        @Resource
-        private PreLoginFilter preLoginFilter;
-        @Resource
-        private JwtAuthenticationFilter jwtAuthenticationFilter;
+        @Autowired
+        Collection<LoginPostProcessor> loginPostProcessors;
+        @Autowired
+        JwtTokenGenerator jwtTokenGenerator;
+        @Autowired
+        JwtTokenStorage jwtTokenStorage;
         @Autowired
         private AuthenticationSuccessHandler authenticationSuccessHandler;
         @Autowired
@@ -104,8 +103,8 @@ public class CustomWebSecurityConfiguration {
                     .and()
                     .authorizeRequests().anyRequest().authenticated()
                     .and()
-                    .addFilterBefore(preLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(new PreLoginFilter(LOGIN_PROCESSING_URL,loginPostProcessors), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(new JwtAuthenticationFilter(jwtTokenGenerator,jwtTokenStorage), UsernamePasswordAuthenticationFilter.class)
 //                    .successForwardUrl("/login/success")
 //                    .failureForwardUrl("/login/failure")
                     .formLogin().loginProcessingUrl(LOGIN_PROCESSING_URL).successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler)
