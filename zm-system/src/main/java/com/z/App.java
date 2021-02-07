@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan("com.z.*.repository")
 public class App {
-    public static void main(String[] args) {
-        SpringApplication.run(App.class,args);
+    public static void main(String[] argss) {
+        SpringApplication.run(App.class,argss);
     }
 }
