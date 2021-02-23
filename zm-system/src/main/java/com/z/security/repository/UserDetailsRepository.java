@@ -86,7 +86,8 @@ public class UserDetailsRepository {
 
         if(Objects.nonNull(sysUser)){
             return User.withUsername(sysUser.getUsername()).password(sysUser.getPassword())
-                    .authorities(AuthorityUtils.NO_AUTHORITIES)
+                    //todo  这里权限 你需要自己注入
+                    .authorities(AuthorityUtils.createAuthorityList("ROLE_ADMIN","ROLE_APP"))
                     .build();
         }
 

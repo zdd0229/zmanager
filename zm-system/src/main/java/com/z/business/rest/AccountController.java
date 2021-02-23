@@ -2,15 +2,16 @@ package com.z.business.rest;
 
 import com.github.pagehelper.PageInfo;
 import com.z.business.domain.entity.Account;
+import com.z.business.domain.query.AccountQuery;
 import com.z.business.domain.vo.AccountVo;
 import com.z.business.service.AccountService;
-import com.z.business.domain.query.AccountQuery;
 import com.z.utils.BeanCopierUtils;
 import com.z.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,10 @@ public class AccountController {
 
     @GetMapping
     @ApiOperation("条件查询")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("principal.username.startsWith('a')")
+//    @PreAuthorize("#query.name.equals(principal.username)")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity getSome(HttpServletRequest request , AccountQuery query){
 
         List<Account> some = accountService.getSome(query);
